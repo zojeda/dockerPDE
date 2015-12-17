@@ -1,0 +1,44 @@
+{
+  "name": "dpde",
+  "productName": "Dpde",
+  "version": "0.0.0",
+  "description": "My good app",
+  "license": "MIT",
+  "repository": "zojeda/dpde",
+  "author": {
+    "name": "Zacarías F. Ojeda",
+    "email": "zojeda@gmail.com",
+    "url": "github.com/zojeda"
+  },
+  "electronVersion": "0.36.0",
+  "scripts": {
+    "start": "electron .",
+    "build": "gulp build",
+    "build-package": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
+  },
+  "files": [
+    "./src"
+  ],
+  "main": "built/index.js",
+  "dependencies": {
+    "angular": "^1.4.8",
+    "css-loader": "^0.23.0",
+    "electron-debug": "^0.5.0",
+    "postcss-loader": "^0.8.0",
+    "style-loader": "^0.13.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.1.2",
+    "electron-packager": "^5.0.0",
+    "electron-prebuilt": "^0.36.0",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "file-loader": "^0.8.5",
+    "gulp": "^3.9.0",
+    "html-webpack-plugin": "^1.7.0",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.0",
+    "ts-loader": "^0.7.2",
+    "webpack": "^1.12.9",
+    "webpack-stream": "^3.1.0"
+  }
+}
