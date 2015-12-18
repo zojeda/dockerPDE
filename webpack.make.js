@@ -36,7 +36,17 @@ module.exports = function makeWebpackConfig (options) {
     }
   }
 
-  config.resolve = { extensions: ['', '.ts', '.js'] };
+  config.resolve = { 
+    extensions: ['', '.ts', '.js'],
+  
+    alias: {
+      'ace/ace':     __dirname + '/node_modules/ace-builds/src-min-noconflict/ace.js',
+      'ace/ext-language_tools':__dirname+ '/node_modules/ace-builds/src-min-noconflict/ext-language_tools.js',
+      'ace/mode-markdown':         __dirname + '/node_modules/ace-builds/src-min-noconflict/mode-markdown.js',
+      'ace/snippets/markdown':     __dirname + '/node_modules/ace-builds/src-min-noconflict/snippets/markdown.js',
+
+    }  
+   };
   /**
    * Output
    * Reference: http://webpack.github.io/docs/configuration.html#output
