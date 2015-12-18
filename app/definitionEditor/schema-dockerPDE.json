@@ -1,0 +1,62 @@
+//typson schema app/dockerPDE.interface.d.ts "dockerPDE.Definition" > app/schema-dockerPDE.json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "dockerPDE.Definition",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "containers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/dockerPDE.Container"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "containers"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "dockerPDE.Container": {
+      "id": "dockerPDE.Container",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "image"
+      ],
+      "additionalProperties": false
+    },
+    "dockerPDE.Command": {
+      "id": "dockerPDE.Command",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "container": {
+          "$ref": "#/definitions/dockerPDE.Container"
+        },
+        "command": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "container",
+        "command"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

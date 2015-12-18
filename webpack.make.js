@@ -36,6 +36,7 @@ module.exports = function makeWebpackConfig (options) {
     }
   }
 
+  config.resolve = { extensions: ['', '.ts', '.js'] };
   /**
    * Output
    * Reference: http://webpack.github.io/docs/configuration.html#output
@@ -105,6 +106,12 @@ module.exports = function makeWebpackConfig (options) {
       // Allow loading html through js
       test: /\.html$/,
       loader: 'raw'
+    }, {
+      // JSON LOADER
+      // Reference: https://github.com/webpack/json-loader
+      // Allow loading a json parsed object 
+      test: /\.json$/,
+      loader: 'json'
     }]
   };
 
@@ -180,11 +187,11 @@ module.exports = function makeWebpackConfig (options) {
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
       // Dedupe modules in the output
-      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.DedupePlugin()
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
-      new webpack.optimize.UglifyJsPlugin()
+//      new webpack.optimize.UglifyJsPlugin()
     )
   }
 

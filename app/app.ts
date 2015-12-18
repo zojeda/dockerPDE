@@ -1,8 +1,8 @@
-import './index.css';
-
 import angular = require('angular');
 
+import 'bootstrap/dist/css/bootstrap.css';
 
-console.log('siiiii')
+import definitionEditor from './definitionEditor';
 
-angular.module('app', []);
+
+angular.module('app', [definitionEditor])
