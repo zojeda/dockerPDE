@@ -1,6 +1,6 @@
 {
   "name": "dpde",
-  "productName": "Dpde",
+  "productName": "docker-pde-client",
   "version": "0.0.0",
   "description": "My good app",
   "license": "MIT",
@@ -10,11 +10,8 @@
     "email": "zojeda@gmail.com",
     "url": "github.com/zojeda"
   },
-  "electronVersion": "0.36.0",
   "scripts": {
-    "start": "electron .",
-    "build": "gulp build",
-    "build-package": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
+    "start": "webpack-dev-server --config webpack.build.js"
   },
   "files": [
     "./src"
@@ -32,18 +29,13 @@
     "json-loader": "^0.5.4",
     "postcss-loader": "^0.8.0",
     "select2": "^4.0.1",
-    "style-loader": "^0.13.0"
+    "style-loader": "^0.13.0",
+    "typescript": "^1.7.5"
   },
   "devDependencies": {
     "autoprefixer": "^6.1.2",
-    "del": "^2.2.0",
-    "electron-packager": "^5.0.0",
-    "electron-prebuilt": "^0.36.0",
     "extract-text-webpack-plugin": "^0.9.1",
     "file-loader": "^0.8.5",
-    "gulp": "^3.9.0",
-    "gulp-livereload": "^3.8.1",
-    "gulp-run": "^1.6.12",
     "html-webpack-plugin": "^1.7.0",
     "raw-loader": "^0.5.1",
     "run-sequence": "^1.1.5",

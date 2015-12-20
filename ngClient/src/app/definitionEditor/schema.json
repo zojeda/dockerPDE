@@ -1,0 +1,13 @@
+{
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "favorite_color": {
+      "type": "string",
+      "source": "github",
+      "title": "favorite color",
+      "default": "#ffa500"
+    }
+  },
+  "required": ["favorite_color"]	
+}

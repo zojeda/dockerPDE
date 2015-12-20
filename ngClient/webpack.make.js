@@ -32,7 +32,7 @@ module.exports = function makeWebpackConfig (options) {
     config.entry = {}
   } else {
     config.entry = {
-      app: './app/app.ts'
+      app: './src/app/app.ts'
     }
   }
 
@@ -182,7 +182,7 @@ module.exports = function makeWebpackConfig (options) {
     // Render index.html
     config.plugins.push(
       new HtmlWebpackPlugin({
-        template: './app/index.html',
+        template: './src/app/index.html',
         inject: 'body'
       })
     )
