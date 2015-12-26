@@ -1,6 +1,18 @@
 log-viewer {
 	background: black;
 	color: white;
-	font-family: Courier, monospace;
+	font-family: termFont;
 	display:inline-block;
+	padding: 6px;
 }
+log-viewer div {
+	margin: -4px;
+}
+
+@font-face {
+    font-family: 'termFont';
+    src:  url('./liberation-mono-powerline.ttf');
+		 font-weight: normal;
+    font-style: normal;
+}
+

@@ -49,11 +49,16 @@ io.of('pty').on('connection', function(socket) {
 			timestamps: true
 		};
 
-		container.logs(logs_opts, function(err, logsStream) {
-				stream.pipe(process.stdout);
-				logsStream.pipe(stream)
-			});
-
+		container.exec({Cmd: ['/usr/bin/zsh'],
+		AttachStdin: true,
+		AttachStdout: true,
+		AttachStderr: true,
+		Tty: true
+		}, (err, exec) => {
+				exec.start({Detach: false, Tty: true, hijack: true, stdin: true}, (execErr, execStream) => {
+					execStream.pipe(stream).pipe(execStream);
+				});
+		})
 		socket.on('disconnect', function() {
 			console.log("end");
 		});
@@ -61,7 +66,7 @@ io.of('pty').on('connection', function(socket) {
 });
 
 docker.createContainer({
-	Image: 'ubuntu',
+	Image: 'zojeda/node-dev-env',
 	name: 'prueba',
 	AttachStdin: false,
 	AttachStdout: true,
