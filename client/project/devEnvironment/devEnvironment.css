@@ -1,4 +1,14 @@
+.environmentBar {
+	background-color: grey;
+  width: 50px;	
+}
+.environmentItem {
+	background-color: grey;
+  padding-bottom: 10px;
+} 
 .devCommandButton {
 	margin: 1px;
 	border-radius: 0px !important;
+	padding-top: 5px;
 }
+
