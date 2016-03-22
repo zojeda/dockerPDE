@@ -1,0 +1,41 @@
+{
+  "name": "docker-pde-client",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "webpack-dev-server --inline --hot --open --content-base build/",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings",
+    "postinstall": "typings install"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.5.2",
+    "angular-animate": "^1.5.2",
+    "angular-aria": "^1.5.2",
+    "angular-material": "^1.0.6",
+    "angular-messages": "^1.5.2",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.35.0",
+    "font-awesome": "^4.5.0",
+    "info": "^1.0.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^0.17.0-rc.0",
+    "concurrently": "^2.0.0",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.8.5",
+    "info": "^1.0.0",
+    "less": "^2.6.1",
+    "less-loader": "^2.2.2",
+    "lite-server": "^2.1.0",
+    "style-loader": "^0.13.0",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.9",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

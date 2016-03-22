@@ -1,0 +1,29 @@
+Info 0    request: {       "command": "configure",       "arguments": {"hostInfo": "Cloud9"},     "type": "request",      "seq": 1}
+Info 1    Host information Cloud9
+Info 2    response: {"seq":0,"type":"response","command":"configure","request_seq":1,"success":true}
+Perf 3    Async elapsed time (in milliseconds): 2.9271
+Info 4    request: {       "command": "reloadProjects", "type": "request",      "seq": 2}
+Err 5     reload projects.
+Info 6    updating project structure from ...
+Info 7    Open file roots of inferred projects: 
+Open files referenced by inferred or configured projects: 
+Open file roots of configured projects: 
+Info 8    Open file roots of inferred projects: 
+Open files referenced by inferred or configured projects: 
+Open file roots of configured projects: 
+Perf 9    Async elapsed time (in milliseconds): 3.8292
+Info 10   request: {       "command": "projectInfo",       "arguments": {"file": "/home/zaca/Development/dockerPDE/pde-server/tsconfig.json", "needFileNameList": false},     "type": "request",      "seq": 3}
+Err 11    Exception on executing command {       "command": "projectInfo",       "arguments": {"file": "/home/zaca/Development/dockerPDE/pde-server/tsconfig.json", "needFileNameList": false},     "type": "request",      "seq": 3}:
+Cannot read property 'projectFilename' of undefined
+TypeError: Cannot read property 'projectFilename' of undefined
+    at IOSession.Session.getProjectInfo (/usr/lib/node_modules/typescript/lib/tsserver.js:41772:44)
+    at Session.handlers._a.(anonymous function) (/usr/lib/node_modules/typescript/lib/tsserver.js:41529:50)
+    at IOSession.Session.executeCommand (/usr/lib/node_modules/typescript/lib/tsserver.js:42240:28)
+    at IOSession.Session.onMessage (/usr/lib/node_modules/typescript/lib/tsserver.js:42255:35)
+    at Interface.<anonymous> (/usr/lib/node_modules/typescript/lib/tsserver.js:44257:27)
+    at emitOne (events.js:90:13)
+    at Interface.emit (events.js:182:7)
+    at Interface._onLine (readline.js:211:10)
+    at Interface.<anonymous> (readline.js:341:12)
+    at Array.forEach (native)
+Info 12   response: {"seq":0,"type":"response","command":"projectInfo","request_seq":3,"success":false,"message":"Error processing request. Cannot read property 'projectFilename' of undefined"}

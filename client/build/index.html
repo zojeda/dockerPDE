@@ -1,0 +1,31 @@
+<html ng-app="app">
+
+<head>
+  <title>Project View</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+
+  <div ng-controller="ProjectsController as projectCtrl" ng-cloak="">
+    <md-content>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <span>Project Amazing</span>
+          <span flex=""></span>
+          <md-button class="md-fab md-mini" aria-label="Favorite">
+            <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <dev-environment environment="projectCtrl.project.devEnvironment"></dev-environment>
+    </md-content>
+  </div>
+
+
+
+  <script src="bundle.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+version: '2'
+
+services: 
+  workspace:
+    image: zojeda/ts-dev
+    volumes:
+      - sample_project:/sample_project
+    command: "tail -f /dev/null"
+      
+  ssh-dev:
+    image: jeroenpeeters/docker-ssh
+    expose:
+      - "22"
+    volumes:
+      - sample_project:/sample_project
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - AUTH_MECHANISM=noAuth
+      - CONTAINER=sampleproject_workspace_1
+      
+  sync-server:
+    image: leighmcculloch/unison
+    expose:
+      - "5001"
+    volumes:
+      - sample_project:/sample_project
+    working_dir: /sample_project
+#    command: "tail -f /dev/null"
+    command: "unison-2.40.102 -socket 5001"
+    
+  ide:
+    image: zojeda/ts-dev
+    expose:
+      - "8181"
+    volumes:
+      - sample_project:/sample_project
+    command: "node /cloud9/server.js --listen 0.0.0.0 -w /sample_project -a : "  
+      
+volumes:
+  sample_project: {}

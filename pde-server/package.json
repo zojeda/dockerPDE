@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "dockerode": "^2.2.9",
-    "ts-node": "^0.5.5"
+    "temp": "^0.8.3",
+    "ts-node": "^0.5.5",
+    "yamljs": "^0.2.6"
   }
 }
