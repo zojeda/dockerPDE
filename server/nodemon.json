@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "ignore": ["*.spec.ts", ".c9"],
+  "execMap": {
+    "ts": "ts-node"
+  }
+}

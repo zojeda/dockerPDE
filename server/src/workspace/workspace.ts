@@ -30,43 +30,28 @@ class Workspace {
 	}
 
 	public start(response: Response<string, string>) {
-		temp.open("dockerPDE-workspace", (err, info) => {
-			if (!err) {
-				fs.write(info.fd, yalm.stringify(this.composeDefinition));
-				fs.close(info.fd, (err) => {
-					console.log(info.path);
-					let compose = proc.spawn("docker-compose", ["-f", info.path, "-p", this.id,  "up", "-d"]);
-					const rl = readline.createInterface({
-						input: compose.stderr
-					});
-
-					rl.on("line", (line) => {
-						response.notification(line);
-					});
-					compose.on("error", (error) => {
-						response.complete(error);
-					});
-					compose.on("close", () => {
-						response.complete(null, "OK");
-					});
-				});
-			}
-		});
+		this.spawnComposeProcess(["up", "-d"], response);
 	}
 
 	public stop(response: Response<string, string>) {
+		this.spawnComposeProcess(["down"], response);
+	}
+
+  private spawnComposeProcess(command: string[], response: Response<string, string>) {
 		temp.open("dockerPDE-workspace", (err, info) => {
 			if (!err) {
 				fs.write(info.fd, yalm.stringify(this.composeDefinition));
 				fs.close(info.fd, (err) => {
 					console.log(info.path);
-					let compose = proc.spawn("docker-compose", ["-f", info.path, "-p", this.id,  "down"]);
+          let args : string[] = ["-f", info.path, "-p", this.id];
+          args = args.concat(command);
+					let compose = proc.spawn("docker-compose", args);
 					const rl = readline.createInterface({
 						input: compose.stderr
 					});
 
 					rl.on("line", (line) => {
-						response.notification(line);
+						response.progress(line);
 					});
 					compose.on("error", (error) => {
 						response.complete(error);
@@ -77,11 +62,9 @@ class Workspace {
 				});
 			}
 		});
-	}
-
+  }
 	private toComposeDefinition() {
 		this.workspaceDefinition = {
-      id: "sampleproject",
 			development: {
 				image: "zojeda/ts-dev",
 				ports: [5858, 3000, 5000],
@@ -116,9 +99,8 @@ class Workspace {
 
 		};
 
-    this.composeDefinition = toComposeDefinition(this.workspaceDefinition);
+    this.composeDefinition = toComposeDefinition(this.id, this.workspaceDefinition);
 	}
 }
 
 export = Workspace;
-

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "nodemon src/server.ts",
     "test": "mocha --require ts-node/register test/**/*.spec.ts"
   },
   "author": "",
@@ -15,6 +15,7 @@
     "express": "^4.13.4",
     "temp": "^0.8.3",
     "ts-node": "^0.5.5",
+    "typescript": "^1.8.9",
     "yamljs": "^0.2.6"
   }
 }

@@ -1,4 +1,4 @@
-function toComposeDefinition(workspaceDefinition: WorkspaceDefinition) {
+  function toComposeDefinition(workspaceId: string, workspaceDefinition: WorkspaceDefinition) {
   let composeDefinition: any = {};
   let workspaceDev = workspaceDefinition.development;
   composeDefinition.development = {
@@ -11,7 +11,7 @@ function toComposeDefinition(workspaceDefinition: WorkspaceDefinition) {
     volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
     ports: ["22", "8022"],
     environment: {
-      CONTAINER: workspaceDefinition.id + "_development_1",
+      CONTAINER: workspaceId + "_development_1",
       AUTH_MECHANISM: "noAuth"
     }
   };

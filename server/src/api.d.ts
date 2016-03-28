@@ -1,6 +1,6 @@
 interface Response<T, N> {
 	complete: (error: Error, response?: T) => void;
-	notification?: (N) => void;
+	progress?: (N) => void;
 }
 
 interface CommandDefinition {
@@ -24,7 +24,6 @@ interface DevelopmentEnvironment {
 }
 
 interface WorkspaceDefinition {
-  id: string;
 	development: DevelopmentEnvironment;
 }
 
