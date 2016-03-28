@@ -1,3 +1,6 @@
+import "./applications.css";
+
+
 class ApplicationsController {};
 
 let applications: angular.IComponentOptions = {

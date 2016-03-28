@@ -19,7 +19,7 @@ class ProjectsController {
 				install: { description: "Install all dependencies", style: "fa fa-laptop"  }
 			}
 		}
-	}
+	};
 }
 
 angular.module("app", ["ngMaterial", "ngMessages"])

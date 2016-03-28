@@ -7,12 +7,11 @@ var yalm = require("yamljs");
 let sampleProject = {
   version: "2",
   services: {
-    "dev" : {
+    "dev": {
       image: "node",
       command: "tail -f /dev/null"
-      
     },
-    "ssh_dev" : {
+    "ssh_dev": {
       image: "jeroenpeeters/docker-ssh",
       volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
       ports: ["22", "8022"],
@@ -20,12 +19,12 @@ let sampleProject = {
         CONTAINER: "zacaproteus_dev_1",
         AUTH_MECHANISM: "noAuth"
       }
-    }, 
-    "proteus_mongodb" : {
+    },
+    "proteus_mongodb": {
       image: "mongo",
       ports: ["27017"],
     },
-    "ssh_proteus_mongodb" : {
+    "ssh_proteus_mongodb": {
       image: "jeroenpeeters/docker-ssh",
       volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
       ports: ["22", "8022"],
@@ -34,17 +33,17 @@ let sampleProject = {
         AUTH_MECHANISM: "noAuth"
       }
     },
-    "other_mongodb" : {
+    "other_mongodb": {
       image: "mongo",
       ports: ["27017"],
-    },    
+    },
     "sshpiperd": {
       image: "farmer1992/sshpiperd",
       ports: ["2222:2222"],
       volumes: [
         `${__dirname}/sshpiperd:/var/sshpiper`,
         "/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key"
-        ]
+      ]
     },
     "nginx": {
       image: "nginx",
@@ -52,16 +51,8 @@ let sampleProject = {
       volumes: [
         `${__dirname}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro`,
         `${__dirname}/nginx/conf.d:/etc/nginx/conf.d:ro`
-        ]
+      ]
     }
-    // "haproxy": {
-    //   image: "haproxy",
-    //   ports: ["8080:80", "27017:27017"],
-    //   volumes: [
-    //     `${__dirname}/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro`,
-    //     ]
-    // }     
-   
   }
 };
 
@@ -75,7 +66,7 @@ temp.open("composeEnvironment", function(err, info) {
     fs.write(info.fd, yalm.stringify(sampleProject));
     fs.close(info.fd, function(err) {
       console.log(info.path);
-      let compose = proc.spawn("docker-compose",  ["-f", info.path, "-p", "zaca@proteus", "up", "-d"]);
+      let compose = proc.spawn("docker-compose", ["-f", info.path, "-p", "zaca@proteus", "up", "-d"]);
       compose.stdout.pipe(process.stdout);
       compose.stderr.pipe(process.stderr);
     });
