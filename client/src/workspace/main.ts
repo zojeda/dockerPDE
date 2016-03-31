@@ -15,18 +15,18 @@ import applications from "./applications/applications.component";
 
 
 angular.module("app", ["ngMaterial", "ngMessages", "ui.router"])
-  .value("workspaceBaseUrl", "http://localhost:4444/")
-	.component("devEnvironment", devEnvironment)
+    .factory("workspaceBaseUrl", ($window: ng.IWindowService) => `http://${$window.location.hostname}:4444/`)
+    .component("devEnvironment", devEnvironment)
 	.component("applications", applications)
-  .component("service", service)
-  .component("workspace", workspace)
+    .component("service", service)
+    .component("workspace", workspace)
 	.config(function($mdThemingProvider) {
 		$mdThemingProvider.theme("default")
 			.dark();
 	})
-  .config(($stateProvider : ng.ui.IStateProvider)  => {
-        $stateProvider.state("workspace", {
-        url: "/:userName/:workspaceName",
-        template: "<workspace></workspace>",
-    });
+    .config(($stateProvider : ng.ui.IStateProvider)  => {
+            $stateProvider.state("workspace", {
+            url: "/:userName/:workspaceName",
+            template: "<workspace></workspace>",
+        });
   });

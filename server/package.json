@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.ts",
-    "test": "mocha --require ts-node/register test/**/*.spec.ts"
+    "test": "mocha --require ts-node/register test/**/*.spec.ts",
+    "postinstall": "typings install"
   },
   "author": "",
   "license": "ISC",
