@@ -15,10 +15,16 @@ workspaceRouter.param("id", (request, response, next, workspaceId) => {
   next();
 });
 
-workspaceRouter.get("/:id", (request, response) => {
+workspaceRouter.get("/:id/definition", (request, response) => {
   let workspace: Workspace = request["workspace"];
   response.send(workspace.workspaceDefinition);
 });
+workspaceRouter.get("/:id/status", (request, response) => {
+  let workspace: Workspace = request["workspace"];
+  workspace.status(createResponseHandler(response));
+});
+
+
 workspaceRouter.put("/:id/start", (request, response) => {
   let workspace: Workspace = request["workspace"];
   workspace.start(createResponseHandler(response));
@@ -34,10 +40,10 @@ function createResponseHandler(response: express.Response) {
   return {
     complete: (error, result) => {
       if (error) {
-        response.write(`{"message": "completed!!"}], {"error": "${error}"}}`);
+        response.write(`{"message": "completed!!"}], "error": "${error}"}`);
         response.status(500).end();
       } else {
-        response.write(`{"message": "completed!!"}], {"result": "${result}"}}`);
+        response.write(`{"message": "completed!!"}], "result": "${result}"}`);
         response.status(200).end();
       }
     },

@@ -1,31 +1,25 @@
 import angular = require("angular");
-import uiRouter from "angular-ui-router";
+import "angular-ui-router";
 import "angular-animate";
 import "angular-aria";
 import "angular-messages";
 import "angular-material/angular-material";
 import "angular-material/angular-material.css";
 
+import workspace from "./workspace.component";
+import service from "./service/service.component";
 import devEnvironment from "./devEnvironment/devEnvironment.component";
 import applications from "./applications/applications.component";
 
 
-class ProjectsController {
-	project = {
-		devEnvironment: {
-			commands: {
-				start: { description: "Start the application", style: "fa fa-play" },
-				clean: { description: "Remove all dependencies and built assets", style: "fa fa-trash" },
-				install: { description: "Install all dependencies", style: "fa fa-laptop"  }
-			}
-		}
-	};
-}
 
-angular.module("app", ["ngMaterial", "ngMessages", uiRouter])
-	.controller("ProjectsController", ProjectsController)
+
+angular.module("app", ["ngMaterial", "ngMessages", "ui.router"])
+  .value("workspaceBaseUrl", "http://localhost:4444/")
 	.component("devEnvironment", devEnvironment)
 	.component("applications", applications)
+  .component("service", service)
+  .component("workspace", workspace)
 	.config(function($mdThemingProvider) {
 		$mdThemingProvider.theme("default")
 			.dark();
@@ -33,7 +27,6 @@ angular.module("app", ["ngMaterial", "ngMessages", uiRouter])
   .config(($stateProvider : ng.ui.IStateProvider)  => {
         $stateProvider.state("workspace", {
         url: "/:userName/:workspaceName",
-        template: require("./workspace.html"),
-        controller: ProjectsController
+        template: "<workspace></workspace>",
     });
   });

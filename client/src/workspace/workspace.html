@@ -2,11 +2,14 @@
   <md-sidenav class="md-sidenav-left environmentBar" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop
   md-whiteframe="1">
     <md-content class="">
-      <dev-environment environment="projectCtrl.project.devEnvironment"></dev-environment>
-      <dev-environment environment="projectCtrl.project.devEnvironment"></dev-environment>
+      <dev-environment environment="workspace.definition.development"></dev-environment>
+      <service ng-repeat="service in workspace.definition.development.services" service="service"></service>
     </md-content>
   </md-sidenav>
   <md-content flex layout-padding>
+    <div ng-if="workspace.status">
+      aaaaa
+    </div>
     <applications></applications>
   </md-content>
 </section>

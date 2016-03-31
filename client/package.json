@@ -2,7 +2,7 @@
   "name": "docker-pde-client",
   "version": "0.0.1",
   "scripts": {
-    "start": "webpack-dev-server --inline --hot --open --content-base build/",
+    "start": "webpack-dev-server --host 0.0.0.0 --inline --hot --open --content-base build/",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",

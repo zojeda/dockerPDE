@@ -7,9 +7,12 @@ interface CommandDefinition {
 	description: string;
 	style: string;
 }
+
 interface ApplicationDefinition {
-	image: string;
+	image?: string;
 	command?: string;
+  description?: string;
+  icon?: string;
 	port: number;
 	type: "service" | "web-app";
 }

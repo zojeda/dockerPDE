@@ -5,6 +5,13 @@
 			<h2><i class="fa fa-laptop"></i></h2>
 		</md-button>
 
+		<md-button ng-repeat="(tool, details) in dev.environment.tools" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini">
+			<i class="{{details.style}}"></i>
+			<md-tooltip md-direction="right">
+				<b>{{tool}} : </b>{{details.description}}
+			</md-tooltip>
+		</md-button>
+    
 		<md-button ng-repeat="(command, details) in dev.environment.commands" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini">
 			<i class="{{details.style}}"></i>
 			<md-tooltip md-direction="right">
@@ -19,4 +26,5 @@
 			</span>
 		</md-button>
 	</md-content>
+  {{dev.development}}
 </md-sidenav>

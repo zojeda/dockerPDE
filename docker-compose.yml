@@ -1,0 +1,15 @@
+version: '2'
+services:
+  docker-pde: 
+    build: .
+    image: zojeda/docker-pde
+    ports:
+      - "8080:8080"
+      - "4444:4444"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"      
+      - ".:/dockerPDE" 
+      
+
+        
+   

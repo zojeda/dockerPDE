@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    app: ["./workspace/main.ts"]
+    app: ["./src/workspace/main.ts"]
   },
   output: {
     path: path.resolve(__dirname, "build"),

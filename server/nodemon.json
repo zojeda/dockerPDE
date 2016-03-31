@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "ignore": ["*.spec.ts", ".c9"],
+  "ignore": ["*.spec.ts", ".c9", "_*", "dockerPDE*"],
   "execMap": {
     "ts": "ts-node"
   }

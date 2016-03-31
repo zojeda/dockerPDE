@@ -1,4 +1,4 @@
-  function toComposeDefinition(workspaceId: string, workspaceDefinition: WorkspaceDefinition) {
+function toComposeDefinition(workspaceId: string, workspaceDefinition: WorkspaceDefinition) {
   let composeDefinition: any = {};
   let workspaceDev = workspaceDefinition.development;
   composeDefinition.development = {
@@ -16,22 +16,26 @@
     }
   };
   Object.keys(workspaceDev.tools).forEach(tool => {
-    composeDefinition["development_tool_" + tool] = getApplication(workspaceDev.tools[tool]);
+    composeDefinition["development_tool_" + tool] = getApplication(workspaceDev.tools[tool], workspaceDev.image);
   });
   Object.keys(workspaceDev.services).forEach(service => {
-    composeDefinition["development_service_" + service] = getApplication(workspaceDev.services[service]);
+    composeDefinition["development_service_" + service] = getApplication(workspaceDev.services[service], workspaceDev.image);
   });
 
   return composeDefinition;
 }
 
 
-function getApplication(application: ApplicationDefinition) {
+function getApplication(application: ApplicationDefinition, defaultImage: string) {
   let composeApplication: any = {
-    image: application.image,
     ports: getPorts(application.port)
   };
-  if(application.command) {
+  if (application.image) {
+    composeApplication.image = application.image;
+  } else {
+    composeApplication.image = defaultImage;
+  }
+  if (application.command) {
     composeApplication.command = application.command;
   }
   return composeApplication;

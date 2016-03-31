@@ -7,6 +7,7 @@ import toComposeDefinition = require("./definitionTransformer");
 
 let temp = require("temp");
 var yalm = require("yamljs");
+var mergeStream = require("merge-stream");
 
 class Workspace {
 	public workspaceDefinition: WorkspaceDefinition;
@@ -37,6 +38,10 @@ class Workspace {
 		this.spawnComposeProcess(["down"], response);
 	}
 
+	public status(response: Response<string, string>) {
+		this.spawnComposeProcess(["ps", "-q"], response);
+	}
+  
   private spawnComposeProcess(command: string[], response: Response<string, string>) {
 		temp.open("dockerPDE-workspace", (err, info) => {
 			if (!err) {
@@ -45,19 +50,31 @@ class Workspace {
 					console.log(info.path);
           let args : string[] = ["-f", info.path, "-p", this.id];
           args = args.concat(command);
+          console.log(`docker-compose ${args.join(" ")}`);
 					let compose = proc.spawn("docker-compose", args);
+          let stdoutAndError = mergeStream();
+          stdoutAndError.add(compose.stderr);
+          stdoutAndError.add(compose.stdout);
+
+          var responseContent = "";
 					const rl = readline.createInterface({
-						input: compose.stderr
+						input: stdoutAndError
 					});
 
 					rl.on("line", (line) => {
 						response.progress(line);
+            responseContent+=line+"\\n";
 					});
 					compose.on("error", (error) => {
 						response.complete(error);
 					});
-					compose.on("close", () => {
-						response.complete(null, "OK");
+					compose.on("close", (code) => {
+            console.log(code);
+            if(code) {
+  						response.complete(new Error(`error code[${code}]`));
+            } else {
+              response.complete(null, responseContent);
+            }
 					});
 				});
 			}
@@ -76,8 +93,9 @@ class Workspace {
 				},
 				tools: {
 					cloud9: {
-						image: "zojeda/ts-dev",
 						command: "node /cloud9/server.js -w /sample-project",
+            description: "Cloud9 IDE",
+            icon: "<i class=\"{{details.style}}\"></i>",
 						port: 8181,
 						type: "web-app"
 					},
