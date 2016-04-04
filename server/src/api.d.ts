@@ -14,7 +14,7 @@ interface ApplicationDefinition {
   description?: string;
   icon?: string;
 	port: number;
-	type: "service" | "web-app";
+	type: "tcp-service" | "http-api" | "web-application";
 }
 
 interface DevelopmentEnvironment {

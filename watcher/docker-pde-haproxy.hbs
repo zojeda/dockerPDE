@@ -1,0 +1,5 @@
+{{#containers}}
+{{#if Labels.[dockerpde.name]}}
+{{Labels.[dockerpde.name]}} : {{NetworkSettings.Networks.dockerpde_default.IPAddress}}
+{{/if}}
+{{/containers}}

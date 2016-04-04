@@ -1,34 +1,49 @@
 function toComposeDefinition(workspaceId: string, workspaceDefinition: WorkspaceDefinition) {
-  let composeDefinition: any = {};
+  let composeServices: any = {};
+  let composeDefinitions: any = {
+    version: "2",
+    services: composeServices,
+    networks: {
+      "docker-pde": {
+        external: {
+          name: "dockerpde_default"
+        }
+      }
+    }
+  };
   let workspaceDev = workspaceDefinition.development;
-  composeDefinition.development = {
+  composeServices.development = {
     image: workspaceDev.image,
     command: workspaceDev.command ? workspaceDev.command : "tail -f /dev/null",
     ports: getPorts(workspaceDev.ports),
   };
-  composeDefinition.ssh_development = {
+  composeServices.ssh_development = {
     image: "jeroenpeeters/docker-ssh",
     volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
     ports: ["22", "8022"],
     environment: {
       CONTAINER: workspaceId + "_development_1",
       AUTH_MECHANISM: "noAuth"
-    }
+    },
+    networks: getNetworks("ssh.development", workspaceId),
+    labels: getLabels("ssh.development", workspaceId, "tcp-service"),
   };
   Object.keys(workspaceDev.tools).forEach(tool => {
-    composeDefinition["development_tool_" + tool] = getApplication(workspaceDev.tools[tool], workspaceDev.image);
+    composeServices["development_tool_" + tool] = getApplication(tool,  workspaceId, workspaceDev.tools[tool], workspaceDev.image);
   });
   Object.keys(workspaceDev.services).forEach(service => {
-    composeDefinition["development_service_" + service] = getApplication(workspaceDev.services[service], workspaceDev.image);
+    composeServices["development_service_" + service] = getApplication(service,  workspaceId, workspaceDev.services[service], workspaceDev.image);
   });
 
-  return composeDefinition;
+  return composeDefinitions;
 }
 
 
-function getApplication(application: ApplicationDefinition, defaultImage: string) {
+function getApplication(applicationName: string, workspaceId: string, application: ApplicationDefinition, defaultImage: string) {
   let composeApplication: any = {
-    ports: getPorts(application.port)
+    ports: getPorts(application.port),
+    labels: getLabels(applicationName, workspaceId, application.type),
+    networks: getNetworks(applicationName, workspaceId)
   };
   if (application.image) {
     composeApplication.image = application.image;
@@ -41,8 +56,6 @@ function getApplication(application: ApplicationDefinition, defaultImage: string
   return composeApplication;
 }
 
-
-
 function getPorts(ports) {
   let resultPorts = [];
   if (ports.constructor === Array) {
@@ -53,5 +66,20 @@ function getPorts(ports) {
   return resultPorts;
 }
 
+function getNetworks(host: string, workspaceId: string) {
+  let networks = {
+    "docker-pde": {
+      "aliases": [`${host}.${workspaceId}`]
+    }
+  };
+  return networks;
+}
 
+function getLabels(host: string, workspaceId: string, type: string) {
+  let labels = {
+    "dockerpde.name": `${host}.${workspaceId}`,
+    "dockerpde.application.type": `${host}.${workspaceId}`
+  };
+  return labels;
+}
 export = toComposeDefinition;

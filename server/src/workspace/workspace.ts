@@ -97,7 +97,7 @@ class Workspace {
             description: "Cloud9 IDE",
             icon: "<i class=\"{{details.style}}\"></i>",
 						port: 8181,
-						type: "web-app"
+						type: "web-application"
 					},
 					// ungit: {
 					// 	image: "zojeda/ts-dev",
@@ -110,7 +110,7 @@ class Workspace {
 					mymongodb: {
 						image: "mongo",
 						port: 27017,
-						type: "service"
+						type: "tcp-service"
 					}
 				}
 			}
