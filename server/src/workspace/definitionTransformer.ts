@@ -26,13 +26,24 @@ function toComposeDefinition(workspaceId: string, workspaceDefinition: Workspace
       AUTH_MECHANISM: "noAuth"
     },
     networks: getNetworks("ssh.development", workspaceId),
-    labels: getLabels("ssh.development", workspaceId, "tcp-service"),
+    labels: getLabels("ssh.development", workspaceId, "tcp-service", "web.ssh"),
   };
   Object.keys(workspaceDev.tools).forEach(tool => {
     composeServices["development_tool_" + tool] = getApplication(tool,  workspaceId, workspaceDev.tools[tool], workspaceDev.image);
   });
   Object.keys(workspaceDev.services).forEach(service => {
     composeServices["development_service_" + service] = getApplication(service,  workspaceId, workspaceDev.services[service], workspaceDev.image);
+    composeServices["ssh.development_service_" + service] = {
+      image: "jeroenpeeters/docker-ssh",
+      volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
+      ports: ["22", "8022"],
+      environment: {
+        CONTAINER: workspaceId + "ssh.development_service_" + service + "_1",
+        AUTH_MECHANISM: "noAuth"
+      },
+      networks: getNetworks("ssh.development", workspaceId),
+      labels: getLabels("ssh.development", workspaceId, "tcp-service", "web.ssh"),
+    };
   });
 
   return composeDefinitions;
@@ -75,11 +86,14 @@ function getNetworks(host: string, workspaceId: string) {
   return networks;
 }
 
-function getLabels(host: string, workspaceId: string, type: string) {
+function getLabels(host: string, workspaceId: string, type: string, extraTag?: string) {
   let labels = {
     "dockerpde.name": `${host}.${workspaceId}`,
-    "dockerpde.application.type": `${host}.${workspaceId}`
+    "dockerpde.application.type": type
   };
+  if(extraTag) {
+    labels["dockerpde.tag"]=extraTag;
+  }
   return labels;
 }
 export = toComposeDefinition;

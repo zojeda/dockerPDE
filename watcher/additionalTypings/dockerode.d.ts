@@ -153,16 +153,18 @@ interface CreateContainerReq {
     //stats
   }
 
+  interface ListQueryParameters {
+      all?: boolean;
+      limit?: number;
+      since?: string;
+      before?: string;
+      size?: boolean;
+      filters?: {[key: string]: string[]};
+     }
+
   export = class Docker {
     constructor(dockerHost?: string);
-    listContainers(options: {
-      all?: boolean,
-      limit?: number,
-      since?: string,
-      before?: string,
-      size?: boolean
-     }, done?: (err: Error, containers: ContainerInfo[]) => any );
-    listContainers(done?: (err: Error, containers: ContainerInfo[]) => any );
+    listContainers(options: ListQueryParameters, done?: (err: Error, containers: ContainerInfo[]) => any );
     getContainer(id: string) : Container;
     createContainer(configuration: CreateContainerReq, callback: (err: Error, container: Container) => any );
   }

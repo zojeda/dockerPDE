@@ -5,7 +5,8 @@
 			<h2><i class="fa fa-laptop"></i></h2>
 		</md-button>
 
-		<md-button ng-repeat="(tool, details) in dev.environment.tools" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini">
+		<md-button ng-repeat="(tool, details) in dev.environment.tools" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini"
+       ui-sref="workspace.application({applicationName: tool})" >
 			<i class="{{details.style}}"></i>
 			<md-tooltip md-direction="right">
 				<b>{{tool}} : </b>{{details.description}}
@@ -19,12 +20,12 @@
 			</md-tooltip>
 		</md-button>
 
-		<md-button class="devCommandButton environmentItem md-fab md-raised md-mini md-button">
+		<md-button class="devCommandButton environmentItem md-fab md-raised md-mini md-button"
+      ui-sref="workspace.application({applicationName: 'ssh.development'})" >
 			<span class="fa-stack">
 				<i class="fa fa-square fa-stack-2x"></i>
 				<i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
 			</span>
 		</md-button>
 	</md-content>
-  {{dev.development}}
 </md-sidenav>

@@ -43,16 +43,19 @@ function createResponseHandler(response: express.Response) {
         response.write(`{"message": "completed!!"}], "error": "${error}"}`);
         response.status(500).end();
       } else {
-        response.write(`{"message": "completed!!"}], "result": "${result}"}`);
+        response.write(`{"message": "completed!!"}], "result": ${escapeString(result)}}`);
         response.status(200).end();
       }
     },
     progress: (message) => {
       console.log(message);
-      response.write(`{"message": "${message}"},`);
+      response.write(`{"message": ${escapeString(message)}},`);
     }
-  }
+  };
 };
 
+function escapeString(str: string) {
+  return JSON.stringify(str);
+}
 
 export = workspaceRouter;
