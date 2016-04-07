@@ -42,7 +42,7 @@ function toComposeDefinition(workspaceId: string, workspaceDefinition: Workspace
         AUTH_MECHANISM: "noAuth"
       },
       networks: getNetworks("ssh.development", workspaceId),
-      labels: getLabels("ssh.development", workspaceId, "tcp-service", "web.ssh"),
+      labels: getLabels("ssh.development_service_" + service, workspaceId, "tcp-service", "web.ssh"),
     };
   });
 

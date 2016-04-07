@@ -22,7 +22,7 @@ backend {{Labels.[dockerpde.name]}}
 {{#if_eq Labels.[dockerpde.tag] "web.ssh"}}
 backend {{Labels.[dockerpde.name]}}
   mode http
-  server {{Labels.[dockerpde.name]}} {{NetworkSettings.Networks.dockerpde_default.IPAddress}}:{{Ports.[0].PrivatePort}}
+  server {{Labels.[dockerpde.name]}} {{NetworkSettings.Networks.dockerpde_default.IPAddress}}:8022
 {{/if_eq}}
 {{/containers}}
 

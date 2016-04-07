@@ -8,7 +8,7 @@ let service: angular.IComponentOptions = {
 	template: require("./service.html"),
 	controllerAs: "service",
 	bindings: {
-    serviceName: "="
+    serviceName: "=",
     service: "="
   }
 };
