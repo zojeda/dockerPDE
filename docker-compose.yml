@@ -9,11 +9,27 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"      
       - ".:/dockerPDE"
+  docker-pde-workspace-watcher: 
+    image: zojeda/docker-pde
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - haconfig:/haproxy
+      - ".:/dockerPDE"
+    working_dir: /dockerPDE/dockerode-bars
+    command: "ts-node ./src/DockerodeBarsCli.ts 
+               -s ../services/haproxy/docker-pde-haproxy.hbs
+               -o /haproxy/haproxy.cfg
+               -w 
+               -c com.docker.compose.service=docker-pde-proxy"      
   docker-pde-proxy:
     image: haproxy
     ports:
       - "8080:8080"
+    depends_on: 
+      - docker-pde-workspace-watcher
     volumes:
-      - "./services/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
-    
-      
+      - haconfig:/usr/local/etc/haproxy/:ro
+          
+
+volumes:
+  haconfig: {}

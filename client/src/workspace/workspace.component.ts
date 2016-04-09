@@ -9,32 +9,36 @@ class WorkspaceController {
 
   init() {
     this.workspaceGet("definition")
-      .success((def) => this.definition=def)
+      .success((def) => this.definition = def)
       .catch(console.log);
     this.workspaceGet("status")
-      .success((status: any) => this.status=status.result)
+      .success((status: any) => this.status = status.result)
       .catch(console.log);
+  }
+
+  isDisabled(applicationName: string) {
+    return this.status;
   }
 
   workspaceGet(resource: string) {
-    return this.$http.get(this.workspaceUrl+resource);
+    return this.$http.get(this.workspaceUrl + resource);
   }
 
-	project = {
-		devEnvironment: {
-			commands: {
-				start: { description: "Start the application", style: "fa fa-play" },
-				clean: { description: "Remove all dependencies and built assets", style: "fa fa-trash" },
-				install: { description: "Install all dependencies", style: "fa fa-laptop"  }
-			}
-		}
-	};
+  project = {
+    devEnvironment: {
+      commands: {
+        start: { description: "Start the application", style: "fa fa-play" },
+        clean: { description: "Remove all dependencies and built assets", style: "fa fa-trash" },
+        install: { description: "Install all dependencies", style: "fa fa-laptop" }
+      }
+    }
+  };
 }
 
 let workspace: angular.IComponentOptions = {
-	controller: WorkspaceController,
-	template: require("./workspace.html"),
-	controllerAs: "workspace",
+  controller: WorkspaceController,
+  template: require("./workspace.html"),
+  controllerAs: "workspace",
 };
 
 

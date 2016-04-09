@@ -1,31 +1,38 @@
 <md-sidenav class="md-sidenav-left environmentBar" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop>
-	<md-content layout="column" layout-align="center center" class="environmentItem">
+  <md-content layout="column" layout-align="center center" class="environmentItem">
 
-		<md-button aria-label="menu" class="md-fab md-warn" layout-align="center center">
-			<h2><i class="fa fa-laptop"></i></h2>
-		</md-button>
+    <md-button aria-label="menu" class="md-fab md-warn" layout-align="center center" ng-disabled="dev.disabled">
+      <md-tooltip md-direction="right">
+        <b>Development Environment</b>
+      </md-tooltip>
+      <h2><i class="fa fa-laptop"></i></h2>
+    </md-button>
 
-		<md-button ng-repeat="(tool, details) in dev.environment.tools" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini"
-       ui-sref="workspace.application({applicationName: tool})" >
-			<i class="{{details.style}}"></i>
-			<md-tooltip md-direction="right">
-				<b>{{tool}} : </b>{{details.description}}
-			</md-tooltip>
-		</md-button>
-    
-		<md-button ng-repeat="(command, details) in dev.environment.commands" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini">
-			<i class="{{details.style}}"></i>
-			<md-tooltip md-direction="right">
-				<b>{{command}} : </b>{{details.description}}
-			</md-tooltip>
-		</md-button>
+    <md-button ng-repeat="(tool, details) in dev.environment.tools" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini"
+    ui-sref="workspace.application({applicationName: tool})" ng-disabled="dev.disabled">
+      <i class="{{details.style}}"></i>
+      <md-tooltip md-direction="right">
+        <b>{{tool}} : </b>{{details.description}}
+      </md-tooltip>
+    </md-button>
 
-		<md-button class="devCommandButton environmentItem md-fab md-raised md-mini md-button"
-      ui-sref="workspace.application({applicationName: 'ssh.development'})" >
-			<span class="fa-stack">
+    <md-button ng-repeat="(command, details) in dev.environment.commands" aria-label="Command" class="devCommandButton environmentItem md-fab md-raised md-mini"
+    ng-disabled="dev.disabled">
+      <i class="{{details.style}}"></i>
+      <md-tooltip md-direction="right">
+        <b>{{command}} : </b>{{details.description}}
+      </md-tooltip>
+    </md-button>
+
+    <md-button aria-label="ssh_developent" class="devCommandButton environmentItem md-fab md-raised md-mini md-button" ui-sref="workspace.application({applicationName: 'ssh.development'})"
+    ng-disabled="dev.disabled">
+      <span class="fa-stack">
 				<i class="fa fa-square fa-stack-2x"></i>
 				<i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
 			</span>
-		</md-button>
-	</md-content>
+      <md-tooltip md-direction="right">
+        <b>SSH Development Environment</b>
+      </md-tooltip>
+    </md-button>
+  </md-content>
 </md-sidenav>

@@ -26,8 +26,7 @@ interface CreateContainerReq {
            Mode?: string;
            RW?: boolean;
            Propagation?: string;
-
-			 }[];
+       }[];
        WorkingDir?: string;
        NetworkDisabled?: boolean;
        MacAddress?: string;
@@ -73,8 +72,8 @@ interface CreateContainerReq {
          Devices?: [{PathOnHost?: string, PathInContainer?: string, CgroupPermissions?: string}];
          Ulimits?: [{}];
          LogConfig?: {
-					 Type?: string, //json-file, syslog, journald, gelf, awslogs, splunk, none. json-file 
-					 Config?: {} };
+                                         Type?: string, //json-file, syslog, journald, gelf, awslogs, splunk, none. json-file 
+                                         Config?: {} };
          SecurityOpt?: string[];
          CgroupParent?: string;
          VolumeDriver?: string;
@@ -97,8 +96,8 @@ interface CreateContainerReq {
         Type: string
       }[];
       Labels: {};
-      SizeRw:number;
-      SizeRootFs:number;
+      SizeRw: number;
+      SizeRootFs: number;
       NetworkSettings: {
               Networks: {
                       [name: string]: {
@@ -117,7 +116,7 @@ interface CreateContainerReq {
 
   }
   interface Container {
-    inspect(options:{
+    inspect(options: {
       size: boolean
     }, done?: (err: Error, info: any) => any); //TODO info
     inspect(done?: (err: Error, info: any) => any); //TODO
@@ -125,14 +124,15 @@ interface CreateContainerReq {
     //update
     //changes
     //export
-    start({detachKeys: string}, done?: (err?: Error) => any);
+    start(params: {detachKeys: string}, done?: (err?: Error) => any);
     start(done?: (err?: Error) => any);
     //pause
     //unpause
     //exec
     //commit
     //stop
-    //restart
+    restart(done: (err?: Error) => any);
+    restart(params: {t: number}, done: (err?: Error) => any);
     //kill
     //resize
     //attach
@@ -143,10 +143,10 @@ interface CreateContainerReq {
     //infoArchive
     //putArchivo
     logs(options: {
-       follow?: boolean; // 1/True/true or 0/False/false, return stream. Default false.
+       follow?: boolean; // - 1/True/true or 0/False/false, return stream. Default false.
        stdout?: boolean, // – 1/True/true or 0/False/false, show stdout log. Default false.
-       stderr?: boolean, //– 1/True/true or 0/False/false, show stderr log. Default false.
-       since?: number, // – UNIX timestamp (integer) to filter logs. Specifying a timestamp will only output log-entries since that timestamp. Default: 0 (unfiltered)
+       stderr?: boolean, // – 1/True/true or 0/False/false, show stderr log. Default false.
+       since?: number,   // – UNIX timestamp (integer) to filter logs. Specifying a timestamp will only output log-entries since that timestamp. Default: 0 (unfiltered)
        timestamps?: boolean, // – 1/True/true or 0/False/false, print timestamps for every log line. Default false.
        tail?: number;
     }, callback: (error, stream:  NodeJS.ReadableStream)=>any);
@@ -159,7 +159,13 @@ interface CreateContainerReq {
       since?: string;
       before?: string;
       size?: boolean;
-      filters?: {[key: string]: string[]};
+      filters?: {
+        //  -- containers with exit code of <int>
+        exited?: number[],
+        status?: ("created"|"restarting"|"running"|"paused"|"exited"|"dead")[],
+        label?: string[],
+        isolation?: ("default"|"process"|"hyperv")[]// (Windows daemon only)
+      };
   }
 
   interface EventsQueryParameters {
@@ -175,7 +181,7 @@ interface CreateContainerReq {
       // -- image and container label to filter
       label?: string[],
       // -- either container or image or volume or network
-      type?: "container" | "image" | "volume" | "network"[],
+      type?: ("container"|"image"|"volume"|"network")[],
       // -- volume to filter
       volume?: string[],
       // -- network to filter
@@ -185,11 +191,10 @@ interface CreateContainerReq {
 
   class Docker {
     constructor(dockerHost?: any);
-    listContainers(options: ListQueryParameters, done?: (err: Error, containers: ContainerInfo[]) => any );
+    listContainers(options: ListQueryParameters, done: (err: Error, containers: ContainerInfo[]) => any );
     getContainer(id: string): Container;
     createContainer(configuration: CreateContainerReq, callback: (err: Error, container: Container) => any );
     getEvents(options: EventsQueryParameters, callback: (err: Error, events: NodeJS.ReadableStream) => any )
   }
   export = Docker;
 }
-

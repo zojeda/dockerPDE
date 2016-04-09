@@ -1,0 +1,45 @@
+global
+  daemon
+  maxconn 4096
+
+defaults
+  log global
+  option dontlognull
+  retries   3
+  option redispatch
+  
+backend docker-pde-server
+  mode http
+  server pde-server1 docker-pde:8080
+
+{{#containers}}
+{{#if_eq Labels.[dockerpde.application.type] "web-application"}}
+backend {{Labels.[dockerpde.name]}}
+  mode http
+  timeout server  30000ms
+  server {{Labels.[dockerpde.name]}} {{NetworkSettings.Networks.dockerpde_default.IPAddress}}:{{Ports.[0].PrivatePort}}
+{{/if_eq}}
+{{#if_eq Labels.[dockerpde.tag] "web.ssh"}}
+backend {{Labels.[dockerpde.name]}}
+  mode http
+  server {{Labels.[dockerpde.name]}} {{NetworkSettings.Networks.dockerpde_default.IPAddress}}:8022
+{{/if_eq}}
+{{/containers}}
+
+
+frontend http
+  bind *:8080
+  mode http
+  timeout connect  5000ms
+  timeout client  30000ms
+  default_backend docker-pde-server
+{{#containers}}
+{{#if_eq Labels.[dockerpde.application.type] "web-application"}}
+  acl {{Labels.[dockerpde.name]}}  hdr(host)     -m beg {{Labels.[dockerpde.name]}}.
+  use_backend {{Labels.[dockerpde.name]}} if {{Labels.[dockerpde.name]}}
+{{/if_eq}}
+{{#if_eq Labels.[dockerpde.tag] "web.ssh"}}
+  acl {{Labels.[dockerpde.name]}}  hdr(host)     -m beg {{Labels.[dockerpde.name]}}.
+  use_backend {{Labels.[dockerpde.name]}} if {{Labels.[dockerpde.name]}}
+{{/if_eq}}
+{{/containers}}

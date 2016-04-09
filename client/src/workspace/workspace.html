@@ -1,9 +1,14 @@
 <section layout="row" flex>
-  <md-sidenav class="md-sidenav-left environmentBar" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop
+  <md-sidenav class="md-sidenav-left environmentBar" ng-disabled="true" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop
   md-whiteframe="1">
     <md-content class="">
-      <dev-environment environment="workspace.definition.development"></dev-environment>
-      <service ng-repeat="(serviceName, service) in workspace.definition.development.services" serviceName="serviceName" service="service"></service>
+      <dev-environment environment="workspace.definition.development"
+                disabled="workspace.isDisabled('development')" >
+      </dev-environment>
+      <service ng-repeat="(serviceName, service) in workspace.definition.development.services"
+               service="service" name="serviceName"
+               disabled="workspace.isDisabled('service.'+serviceName)" >
+      </service>
     </md-content>
   </md-sidenav>
   <md-content flex>

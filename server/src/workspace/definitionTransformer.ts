@@ -29,19 +29,19 @@ function toComposeDefinition(workspaceId: string, workspaceDefinition: Workspace
     labels: getLabels("ssh.development", workspaceId, "tcp-service", "web.ssh"),
   };
   Object.keys(workspaceDev.tools).forEach(tool => {
-    composeServices["development_tool_" + tool] = getApplication(tool,  workspaceId, workspaceDev.tools[tool], workspaceDev.image);
+    composeServices["development_tool_" + tool] = getApplication(tool, workspaceId, workspaceDev.tools[tool], workspaceDev.image);
   });
   Object.keys(workspaceDev.services).forEach(service => {
-    composeServices["development_service_" + service] = getApplication(service,  workspaceId, workspaceDev.services[service], workspaceDev.image);
+    composeServices["development_service_" + service] = getApplication(service, workspaceId, workspaceDev.services[service], workspaceDev.image);
     composeServices["ssh.development_service_" + service] = {
       image: "jeroenpeeters/docker-ssh",
       volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
       ports: ["22", "8022"],
       environment: {
-        CONTAINER: workspaceId + "ssh.development_service_" + service + "_1",
+        CONTAINER: workspaceId + "_ssh.development_service_" + service + "_1",
         AUTH_MECHANISM: "noAuth"
       },
-      networks: getNetworks("ssh.development", workspaceId),
+      networks: getNetworks("ssh.development_service_" + service, workspaceId),
       labels: getLabels("ssh.development_service_" + service, workspaceId, "tcp-service", "web.ssh"),
     };
   });
@@ -77,22 +77,23 @@ function getPorts(ports) {
   return resultPorts;
 }
 
-function getNetworks(host: string, workspaceId: string) {
+function getNetworks(applicationName: string, workspaceId: string) {
   let networks = {
     "docker-pde": {
-      "aliases": [`${host}.${workspaceId}`]
+      "aliases": [`${applicationName}.${workspaceId}`]
     }
   };
   return networks;
 }
 
-function getLabels(host: string, workspaceId: string, type: string, extraTag?: string) {
+function getLabels(applicationName: string, workspaceId: string, type: string, extraTag?: string) {
   let labels = {
-    "dockerpde.name": `${host}.${workspaceId}`,
+    "dockerpde.workspace": workspaceId,
+    "dockerpde.name": `${applicationName}.${workspaceId}`,
     "dockerpde.application.type": type
   };
-  if(extraTag) {
-    labels["dockerpde.tag"]=extraTag;
+  if (extraTag) {
+    labels["dockerpde.tag"] = extraTag;
   }
   return labels;
 }

@@ -8,7 +8,7 @@ class ApplicationController {
     let hostname = $window.location.hostname;
     let port = $window.location.port;
     let applicationName = $stateParams["applicationName"];
-    let workspace = $stateParams["userName"]+$stateParams["workspaceName"];
+    let workspace = $stateParams["userName"] + $stateParams["workspaceName"];
     let urlStr = `${protocol}//${applicationName}.${workspace}.${hostname}:${port}`;
     this.url = $sce.trustAsResourceUrl(urlStr);
     console.log(this.url);
@@ -16,9 +16,9 @@ class ApplicationController {
 };
 
 let applications: angular.IComponentOptions = {
-	controller: ApplicationController,
-	template: require("./application.html"),
-	controllerAs: "appCtrl",
+  controller: ApplicationController,
+  template: require("./application.html"),
+  controllerAs: "appCtrl",
 };
 
 

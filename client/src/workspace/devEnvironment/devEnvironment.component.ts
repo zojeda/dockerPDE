@@ -4,11 +4,12 @@ import "./devEnvironment.css";
 class DevEnvironment { };
 
 let devEnvironment: angular.IComponentOptions = {
-	controller: DevEnvironment,
-	template: require("./devEnvironment.html"),
-	controllerAs: "dev",
-	bindings: {
-    environment: "="
+  controller: DevEnvironment,
+  template: require("./devEnvironment.html"),
+  controllerAs: "dev",
+  bindings: {
+    environment: "=",
+    disabled: "="
   }
 };
 
