@@ -1,38 +1,69 @@
+let oboe = require("oboe");
+
+import "./workspace.css";
+
 class WorkspaceController {
   workspaceUrl = "";
   status = "";
   definition = {};
-  constructor($stateParams: ng.ui.IStateParamsService, private $http: ng.IHttpService, private workspaceBaseUrl: string) {
+  private progressInfo: string[];
+  constructor($stateParams: ng.ui.IStateParamsService,
+    private $http: ng.IHttpService,
+    private workspaceBaseUrl: string,
+    private $scope: ng.IScope) {
     this.workspaceUrl = `${workspaceBaseUrl}${$stateParams["userName"]}/${$stateParams["workspaceName"]}/`;
-    this.init();
+    this.refresh();
   }
 
-  init() {
+  refresh() {
     this.workspaceGet("definition")
       .success((def) => this.definition = def)
       .catch(console.log);
     this.workspaceGet("status")
       .success((status: any) => this.status = status.result)
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => {
+        this.progressInfo = undefined;
+        console.log("status : ", this.status);
+      });
+  }
+
+  start() {
+    oboe({ url: this.workspaceUrl + "start", method: "PUT" })
+      .node("progress.*", (progress) => {
+        this.showProgressInfo(progress.message);
+      })
+      .done((completed) => {
+        console.log("completed : ", completed);
+        this.refresh();
+      });
+  }
+  stop() {
+    oboe({ url: this.workspaceUrl + "stop", method: "PUT" })
+      .node("progress.*", (progress) => {
+        this.showProgressInfo(progress.message);
+      })
+      .done((completed) => {
+        console.log("completed : ", completed);
+        this.refresh();
+      });
   }
 
   isDisabled(applicationName: string) {
-    return this.status;
+    return !this.status;
   }
 
-  workspaceGet(resource: string) {
+  private workspaceGet(resource: string) {
     return this.$http.get(this.workspaceUrl + resource);
   }
 
-  project = {
-    devEnvironment: {
-      commands: {
-        start: { description: "Start the application", style: "fa fa-play" },
-        clean: { description: "Remove all dependencies and built assets", style: "fa fa-trash" },
-        install: { description: "Install all dependencies", style: "fa fa-laptop" }
-      }
+  private showProgressInfo(message: string) {
+    if (!this.progressInfo) {
+      this.progressInfo = [];
     }
-  };
+    this.progressInfo.push(message);
+    this.$scope.$apply();
+  }
 }
 
 let workspace: angular.IComponentOptions = {

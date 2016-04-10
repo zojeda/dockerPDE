@@ -1,0 +1,31 @@
+.progressMessages {
+  background-color: black;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 3px;
+}
+.progressMessages p {
+  margin: 2px;
+ }
+.progressMessages i {
+  margin: 2px;
+  color: green;
+ }
+
+.lastProgressMessage i {
+  color: red;
+}
+
+.workspaceBtn {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+.workspaceBtn button {
+    background-color: yellowgreen !important;
+    padding: 0px !important;
+    border: 0px !important;
+    margin: 0px !important;
+    width: 50px !important;
+    /* height: 50px; */
+}

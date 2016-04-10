@@ -1,17 +1,37 @@
 <section layout="row" flex>
-  <md-sidenav class="md-sidenav-left environmentBar" ng-disabled="true" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop
-  md-whiteframe="1">
-    <md-content class="">
-      <dev-environment environment="workspace.definition.development"
-                disabled="workspace.isDisabled('development')" >
+  <md-sidenav class="md-sidenav-left environmentBar" ng-disabled="true" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')"
+  md-disable-backdrop md-whiteframe="1">
+    <md-content>
+      <div class="workspaceBtn">
+      <md-button aria-label="menu" class="md-fab md-warn" ng-click="workspace.start()" ng-if="!workspace.status" >
+        <h2><i class="fa fa-play"></i></h2>
+        <md-tooltip md-direction="right">
+          <b>Start Workspace</b>
+        </md-tooltip>
+      </md-button>
+      <md-button aria-label="menu" class="md-fab md-warn" ng-click="workspace.stop()" ng-if="workspace.status">
+        <h2><i class="fa fa-stop"></i></h2>
+        <md-tooltip md-direction="right">
+          <b>Stop Workpsace</b>
+        </md-tooltip>
+      </md-button>
+      </div>
+      <dev-environment environment="workspace.definition.development" disabled="workspace.isDisabled('development')">
       </dev-environment>
-      <service ng-repeat="(serviceName, service) in workspace.definition.development.services"
-               service="service" name="serviceName"
-               disabled="workspace.isDisabled('service.'+serviceName)" >
+      <service ng-repeat="(serviceName, service) in workspace.definition.development.services" service="service" name="serviceName"
+      disabled="workspace.isDisabled('service.'+serviceName)">
       </service>
+
     </md-content>
   </md-sidenav>
   <md-content flex>
+    <md-content class="progressMessages" ng-if="workspace.progressInfo">
+      <p ng-repeat="progressMessage in workspace.progressInfo" ng-class="{'lastProgressMessage':$last}">
+        <i ng-if="$last" class="fa fa-spinner fa-spin"></i>
+        <i ng-if="!$last" class="fa fa-check"></i>
+        {{progressMessage}}
+      </p>
+    </md-content>
     <div ui-view></div>
   </md-content>
 </section>

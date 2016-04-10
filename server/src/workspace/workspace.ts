@@ -6,8 +6,8 @@ import proc = require("child_process");
 import toComposeDefinition = require("./definitionTransformer");
 
 let temp = require("temp");
-var yalm = require("yamljs");
-var mergeStream = require("merge-stream");
+let yalm = require("yamljs");
+let mergeStream = require("merge-stream");
 
 class Workspace {
   public workspaceDefinition: WorkspaceDefinition;
@@ -25,7 +25,7 @@ class Workspace {
   }
 
   private initialize() {
-    //this.workspaceDefinition = fs.readFileSync(this.workspaceDefinitionPath).toJSON();
+    // this.workspaceDefinition = fs.readFileSync(this.workspaceDefinitionPath).toJSON();
     this.toComposeDefinition();
     this.options = fs.exists(this.optionsPath) ? fs.readFileSync(this.optionsPath).toJSON() : {};
   }
