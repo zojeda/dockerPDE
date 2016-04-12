@@ -14,7 +14,7 @@ function toComposeDefinition(workspaceId: string, workspaceDefinition: Workspace
   let workspaceDev = workspaceDefinition.development;
   composeServices.development = {
     image: workspaceDev.image,
-    command: workspaceDev.command ? workspaceDev.command : "tail -f /dev/null",
+    command: "tail -f /dev/null",
     ports: getPorts(workspaceDev.ports),
   };
   composeServices.ssh_development = {
@@ -23,7 +23,8 @@ function toComposeDefinition(workspaceId: string, workspaceDefinition: Workspace
     ports: ["22", "8022"],
     environment: {
       CONTAINER: workspaceId + "_development_1",
-      AUTH_MECHANISM: "noAuth"
+      AUTH_MECHANISM: "noAuth",
+      CONTAINER_SHELL: workspaceDev.shell || "bash"
     },
     networks: getNetworks("ssh.development", workspaceId),
     labels: getLabels("ssh.development", workspaceId, "tcp-service", "web.ssh"),
@@ -31,18 +32,20 @@ function toComposeDefinition(workspaceId: string, workspaceDefinition: Workspace
   Object.keys(workspaceDev.tools).forEach(tool => {
     composeServices["development_tool_" + tool] = getApplication(tool, workspaceId, workspaceDev.tools[tool], workspaceDev.image);
   });
-  Object.keys(workspaceDev.services).forEach(service => {
-    composeServices["development_service_" + service] = getApplication(service, workspaceId, workspaceDev.services[service], workspaceDev.image);
-    composeServices["ssh.development_service_" + service] = {
+  Object.keys(workspaceDev.services).forEach(serviceName => {
+    let service = workspaceDev.services[serviceName];
+    composeServices["development_service_" + serviceName] = getApplication(serviceName, workspaceId, service, workspaceDev.image);
+    composeServices["ssh.development_service_" + serviceName] = {
       image: "jeroenpeeters/docker-ssh",
       volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
       ports: ["22", "8022"],
       environment: {
-        CONTAINER: workspaceId + "_ssh.development_service_" + service + "_1",
-        AUTH_MECHANISM: "noAuth"
+        CONTAINER: workspaceId + "_ssh.development_service_" + serviceName + "_1",
+        AUTH_MECHANISM: "noAuth",
+        CONTAINER_SHELL: service.shell || "bash"
       },
-      networks: getNetworks("ssh.development_service_" + service, workspaceId),
-      labels: getLabels("ssh.development_service_" + service, workspaceId, "tcp-service", "web.ssh"),
+      networks: getNetworks("ssh.development_service_" + serviceName, workspaceId),
+      labels: getLabels("ssh.development_service_" + serviceName, workspaceId, "tcp-service", "web.ssh"),
     };
   });
 
